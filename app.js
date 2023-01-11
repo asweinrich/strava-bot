@@ -18,8 +18,10 @@ import {
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+let channel = null
+
 client.once(Events.ClientReady, c => {
-  const channel = client.channels.cache.get('942115367935967264');
+  channel = client.channels.cache.get('942115367935967264');
   console.log('Ready! Logged in as '+c.user.tag);
   console.log('Currently sending updates in :'+channel)
 });
