@@ -72,12 +72,6 @@ app.listen(PORT, () => {
 });
 
 
-<<<<<<< HEAD:app.jsx
-
-
-
-=======
->>>>>>> abb401c7a47b75240771070c8dddc695239f9df4:app.js
 setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
@@ -114,8 +108,4 @@ setInterval(() => {
     }).catch((error) => {
         console.error(error);
     });
-<<<<<<< HEAD:app.jsx
 }, 60000);
-=======
-}, 60000);
->>>>>>> abb401c7a47b75240771070c8dddc695239f9df4:app.js
