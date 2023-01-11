@@ -105,7 +105,23 @@ setInterval(() => {
 
       console.log(response.data);
       
-      channel.send(message);
+      channel.send({
+        title: activityName,
+        description: message,
+        color: '#77c471',
+        fields: {
+          {
+            name: 'Distance',
+            value: dist+' miles',
+            inline: false
+          },
+          {
+            name: 'Time',
+            value: dist+' miles',
+            inline: false
+          }
+        }
+      });
 
         
     }).catch((error) => {
