@@ -83,7 +83,7 @@ app.post('/interactions', async function (req, res) {
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners' });
       // Send a message into the channel where command was triggered from
-      return res.send({ embeds: [exampleEmbed] });
+      channel.send({ embeds: [exampleEmbed] });
     }
     // additional guild commands go here: 
   }
