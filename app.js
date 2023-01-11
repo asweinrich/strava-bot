@@ -110,8 +110,8 @@ setInterval(() => {
         duration = minutes+' Min'
       }
 
-      const speed = (distance/(seconds/3600)).toFixed(1)
-      const paceRaw = (seconds/distance)
+      const speed = (dist/(seconds/3600)).toFixed(1)
+      const paceRaw = (seconds/dist)
       const paceMin = (paceRaw/60).toFixed(0)
       let paceSec = ((paceRaw%60)*60).toFixed(0)
       if(paceSec < 10) {
