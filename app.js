@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
-import { Discord } from 'discord.js';
+import { Client, Events, GatewayIntentBits } from 'discord.js';
 import {
   InteractionType,
   InteractionResponseType,
@@ -16,7 +16,13 @@ import {
   HasGuildCommands,
 } from './commands.js';
 
-const client = new Discord.Client();
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.once(Events.ClientReady, c => {
+  const channel = client.channels.cache.get('942115367935967264');
+  console.log('Ready! Logged in as '+c.user.tag);
+  console.log('Currently sending updates in :'+)
+});
 
 client.login(process.env.DISCORD_TOKEN);
 
@@ -77,11 +83,6 @@ app.listen(PORT, () => {
   ]);
 });
 
-
-
-client.on('ready', () => {
-  const channel = client.channels.cache.get('942115367935967264');
-});
 
 setInterval(() => {
 
