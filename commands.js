@@ -1,4 +1,3 @@
-import { getRPSChoices } from './game.js';
 import { capitalize, DiscordRequest } from './utils.js';
 
 export async function HasGuildCommands(appId, guildId, commands) {
@@ -43,40 +42,10 @@ export async function InstallGuildCommand(appId, guildId, command) {
   }
 }
 
-// Get the game choices from game.js
-function createCommandChoices() {
-  const choices = getRPSChoices();
-  const commandChoices = [];
-
-  for (let choice of choices) {
-    commandChoices.push({
-      name: capitalize(choice),
-      value: choice.toLowerCase(),
-    });
-  }
-
-  return commandChoices;
-}
-
 // Simple test command
-export const TEST_COMMAND = {
-  name: 'test',
-  description: 'Basic guild command',
+export const JOIN_COMMAND = {
+  name: 'join',
+  description: 'Basic guild command to join Wave Runners',
   type: 1,
 };
 
-// Command containing options
-export const CHALLENGE_COMMAND = {
-  name: 'challenge',
-  description: 'Challenge to a match of rock paper scissors',
-  options: [
-    {
-      type: 3,
-      name: 'object',
-      description: 'Pick your object',
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
-  type: 1,
-};
