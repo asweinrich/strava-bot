@@ -2,11 +2,11 @@
   "name": "getting-started",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.jsx",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node app.jsx",
+    "dev": "nodemon app.jsx"
   },
   "author": "Shay DeWael",
   "license": "MIT",
