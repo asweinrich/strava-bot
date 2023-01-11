@@ -109,7 +109,7 @@ setInterval(() => {
         title: activityName,
         description: message,
         color: '#77c471',
-        fields: {
+        fields: [
           {
             name: 'Distance',
             value: dist+' miles',
@@ -120,7 +120,7 @@ setInterval(() => {
             value: dist+' miles',
             inline: false
           }
-        }
+        ]
       });
 
         
