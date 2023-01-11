@@ -125,7 +125,7 @@ setInterval(() => {
 
       console.log(response.data);
 
-      if(activty === 'Ride') {
+      if(activity === 'Ride') {
 
         // inside a command, event listener, etc.
         const exampleEmbed = new EmbedBuilder()
@@ -141,7 +141,7 @@ setInterval(() => {
           .setFooter({ text: 'MLC Wave Runners' });
         channel.send({ embeds: [exampleEmbed] });
 
-      } else if(activty === 'Ride') {
+      } else if(activity === 'Ride') {
 
         // inside a command, event listener, etc.
         const exampleEmbed = new EmbedBuilder()
