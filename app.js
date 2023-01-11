@@ -72,6 +72,9 @@ app.listen(PORT, () => {
 });
 
 
+const channel = client.guilds.cache.get('942115367466192936').channels.cache.find(channel => channel.name === 'Androoster')
+
+
 setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
@@ -90,13 +93,8 @@ setInterval(() => {
       const message = athlete+' just completed a '+dist+' mile '+activity+'!'
 
       console.log(response.data);
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Sends activity message in channel
-          content: message,
-        },
-      });
+      
+      channel.send(message);
 
         
     }).catch((error) => {
