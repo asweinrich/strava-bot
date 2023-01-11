@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
+import { Client, GatewayIntentBits } from 'discord.js';
 import {
   InteractionType,
   InteractionResponseType,
@@ -14,6 +15,9 @@ import {
   JOIN_COMMAND,
   HasGuildCommands,
 } from './commands.js';
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 
 // Create an express app
 const app = express();
