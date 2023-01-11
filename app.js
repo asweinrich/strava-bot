@@ -128,7 +128,6 @@ setInterval(() => {
           { name: 'Distance', value: dist+' miles', inline: true },
           { name: 'Time', value: duration, inline: true },
         )
-        .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners' });
 
