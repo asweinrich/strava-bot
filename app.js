@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
+import luxon from 'luxon';
+import axios from 'axios';
 import {
   InteractionType,
   InteractionResponseType,
@@ -68,3 +70,30 @@ app.listen(PORT, () => {
     JOIN_COMMAND,
   ]);
 });
+
+
+
+return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: 'hello world <a href="https://strava.com>Link to Join</a>',
+        },
+      });
+
+setInterval(() => {
+
+    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?per_page=30', {
+        headers: {
+            'Authorization': process.env.STRAVA_KEY
+        }
+    }).then((response) => {
+
+
+        console.log(response);
+
+        
+    }).catch((error) => {
+        console.error(error);
+    });
+}, 600000);
