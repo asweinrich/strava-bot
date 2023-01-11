@@ -119,7 +119,7 @@ setInterval(() => {
       }
       const pace = paceMin+':'+paceSec
 
-      const activity = data[0].type
+      const activity = data[0].sport_type
 
       const message = athlete+' just completed a '+dist+' mile '+activity+'!'
 
@@ -141,7 +141,7 @@ setInterval(() => {
           .setFooter({ text: 'MLC Wave Runners' });
         channel.send({ embeds: [exampleEmbed] });
 
-      } else if(activity === 'Ride') {
+      } else if(activity === 'Run') {
 
         // inside a command, event listener, etc.
         const exampleEmbed = new EmbedBuilder()
