@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Discord } from 'discord.js';
 import {
   InteractionType,
   InteractionResponseType,
@@ -16,7 +16,9 @@ import {
   HasGuildCommands,
 } from './commands.js';
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Discord.Client();
+
+client.login(process.env.DISCORD_TOKEN);
 
 
 // Create an express app
@@ -76,8 +78,10 @@ app.listen(PORT, () => {
 });
 
 
-const channel = client.guilds.cache.get('942115367466192936').channels.cache.find(channel => channel.name === 'Androoster')
 
+client.on('ready', () => {
+  const channel = client.channels.cache.get('942115367935967264');
+});
 
 setInterval(() => {
 
