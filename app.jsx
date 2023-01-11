@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
-import luxon from 'luxon';
+import { DateTime } from 'luxon';
 import axios from 'axios';
 import {
   InteractionType,
@@ -73,27 +73,42 @@ app.listen(PORT, () => {
 
 
 
-return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: 'hello world <a href="https://strava.com>Link to Join</a>',
-        },
-      });
+
 
 setInterval(() => {
 
-    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?per_page=30', {
+    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
-            'Authorization': process.env.STRAVA_KEY
+            'Authorization': 'Bearer '+process.env.STRAVA_KEY
         }
     }).then((response) => {
 
+      const data = response.data
 
-        console.log(response);
+      const activityName = data[0].name
+      const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
+      const dist = (data[0].distance/1600).toFixed(2)
+      const activity = data[0].type
+
+      const message = (
+        <>
+        <em>{activityName}</em>
+        <br />
+        {athlete} just completed a {dist} mile {activity}!
+        </>
+
+      )
+      console.log(response.data);
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Sends activity message in channel
+          content: message,
+        },
+      });
 
         
     }).catch((error) => {
         console.error(error);
     });
-}, 600000);
+}, 60000);
