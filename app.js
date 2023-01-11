@@ -72,15 +72,6 @@ app.listen(PORT, () => {
 });
 
 
-
-return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: 'hello world <a href="https://strava.com>Link to Join</a>',
-        },
-      });
-
 setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?per_page=30', {
