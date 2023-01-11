@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import { DateTime } from 'luxon';
 import axios from 'axios';
 import {
   InteractionType,
@@ -13,8 +14,6 @@ import {
   JOIN_COMMAND,
   HasGuildCommands,
 } from './commands.js';
-
-const { DateTime } = require("luxon");
 
 // Create an express app
 const app = express();
