@@ -88,7 +88,7 @@ app.listen(PORT, () => {
 
 setInterval(() => {
 
-    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
+    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=4', {
         headers: {
             'Authorization': 'Bearer '+process.env.STRAVA_KEY
         }
@@ -104,15 +104,23 @@ setInterval(() => {
       if(seconds > 3600) {
         const hours = (seconds/3600).toFixed(0)
         const minutes = ((seconds%3600)/60).toFixed(0)
-        if(hours > 1) {
-          duration = hours+' Hrs '+minutes+' Min'
-        } else {
-          duration = hours+' Hr '+minutes+' Min'
-        }
+        duration = hours+' Hr '+minutes+' Min'
       } else {
         const minutes =(seconds/60).toFixed(0)
         duration = minutes+' Min'
       }
+
+      const speed = (distance/(seconds/3600)).toFixed(1)
+      const paceRaw = (seconds/distance)
+      const paceMin = (paceRaw/60).toFixed(0)
+      let paceSec = ((paceRaw%60)*60).toFixed(0)
+      if(paceSec < 10) {
+        paceSec.toString().padStart(2, 0)
+      }
+      const pace = paceMin+':'+paceSec
+
+
+
       const activity = data[0].type
 
       const message = athlete+' just completed a '+dist+' mile '+activity+'!'
@@ -125,9 +133,18 @@ setInterval(() => {
         .setTitle(activityName)
         .setDescription(message)
         .addFields(
-          { name: 'Distance', value: dist+' miles', inline: true },
+          { name: 'Distance', value: dist+' Miles', inline: true },
           { name: 'Time', value: duration, inline: true },
         )
+        if(activity === 'Ride') {
+          .addFields(
+            { name: 'Avg Speed', value: speed+' mph', inline: true },
+          )
+        } else if(activity === 'Run') {
+          .addFields(
+            { name: 'Avg Pace', value: pace+' per mile', inline: true },
+          )
+        }
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners' });
 
