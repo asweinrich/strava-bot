@@ -119,36 +119,62 @@ setInterval(() => {
       }
       const pace = paceMin+':'+paceSec
 
-
-
       const activity = data[0].type
 
       const message = athlete+' just completed a '+dist+' mile '+activity+'!'
 
       console.log(response.data);
-      
-      // inside a command, event listener, etc.
-      const exampleEmbed = new EmbedBuilder()
-        .setColor('#77c471')
-        .setTitle(activityName)
-        .setDescription(message)
-        .addFields(
-          { name: 'Distance', value: dist+' Miles', inline: true },
-          { name: 'Time', value: duration, inline: true },
-        )
-        if(activity === 'Ride') {
-          .addFields(
-            { name: 'Avg Speed', value: speed+' mph', inline: true },
-          )
-        } else if(activity === 'Run') {
-          .addFields(
-            { name: 'Avg Pace', value: pace+' per mile', inline: true },
-          )
-        }
-        .setTimestamp()
-        .setFooter({ text: 'MLC Wave Runners' });
 
-      channel.send({ embeds: [exampleEmbed] });
+      if(activty === 'Ride') {
+
+        // inside a command, event listener, etc.
+        const exampleEmbed = new EmbedBuilder()
+          .setColor('#77c471')
+          .setTitle(activityName)
+          .setDescription(message)
+          .addFields(
+            { name: 'Distance', value: dist+' Miles', inline: true },
+            { name: 'Time', value: duration, inline: true },
+            { name: 'Avg Speed', value: speed+' mph', inline: true },
+          )         
+          .setTimestamp()
+          .setFooter({ text: 'MLC Wave Runners' });
+        channel.send({ embeds: [exampleEmbed] });
+
+      } else if(activty === 'Ride') {
+
+        // inside a command, event listener, etc.
+        const exampleEmbed = new EmbedBuilder()
+          .setColor('#77c471')
+          .setTitle(activityName)
+          .setDescription(message)
+          .addFields(
+            { name: 'Distance', value: dist+' Miles', inline: true },
+            { name: 'Time', value: duration, inline: true },
+            { name: 'Avg Pace', value: pace+' per mile', inline: true },
+          )          
+          .setTimestamp()
+          .setFooter({ text: 'MLC Wave Runners' });
+        channel.send({ embeds: [exampleEmbed] });
+
+      } else {
+
+        // inside a command, event listener, etc.
+        const exampleEmbed = new EmbedBuilder()
+          .setColor('#77c471')
+          .setTitle(activityName)
+          .setDescription(message)
+          .addFields(
+            { name: 'Distance', value: dist+' Miles', inline: true },
+            { name: 'Time', value: duration, inline: true },
+          )          
+          .setTimestamp()
+          .setFooter({ text: 'MLC Wave Runners' });
+        channel.send({ embeds: [exampleEmbed] });
+
+      }
+      
+      
 
         
     }).catch((error) => {
