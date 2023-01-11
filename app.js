@@ -87,14 +87,8 @@ setInterval(() => {
       const dist = (data[0].distance/1600).toFixed(2)
       const activity = data[0].type
 
-      const message = (
-        <>
-        <em>{activityName}</em>
-        <br />
-        {athlete} just completed a {dist} mile {activity}!
-        </>
+      const message = athlete+' just completed a '+dist+' mile '+activity+'!'
 
-      )
       console.log(response.data);
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
