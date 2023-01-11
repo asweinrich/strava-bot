@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
-import { Client, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Events, GatewayIntentBits, EmbedBuilder } from 'discord.js';
 import {
   InteractionType,
   InteractionResponseType,
@@ -99,29 +99,40 @@ setInterval(() => {
       const activityName = data[0].name
       const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
       const dist = (data[0].distance/1600).toFixed(2)
+      const seconds = data[0].moving_time
+      let duration = 0
+      if(seconds > 3600) {
+        const hours = (seconds/3600).toFixed(0)
+        const minutes = ((seconds%3600)/60).toFixed(0)
+        if(hours > 1) {
+          duration = hours+' Hrs '+minutes+' Min'
+        } else {
+          duration = hours+' Hr '+minutes+' Min'
+        }
+      } else {
+        const minutes =(seconds/60).toFixed(0)
+        duration = minutes+' Min'
+      }
       const activity = data[0].type
 
       const message = athlete+' just completed a '+dist+' mile '+activity+'!'
 
       console.log(response.data);
       
-      channel.send({
-        title: activityName,
-        description: message,
-        color: '#77c471',
-        fields: [
-          {
-            name: 'Distance',
-            value: dist+' miles',
-            inline: false
-          },
-          {
-            name: 'Time',
-            value: dist+' miles',
-            inline: false
-          }
-        ]
-      });
+      // inside a command, event listener, etc.
+      const exampleEmbed = new EmbedBuilder()
+        .setColor('#77c471')
+        .setTitle(activityName)
+        .setDescription(message)
+        .addFields(
+          { name: 'Distance', value: dist+' miles', inline: true },
+          { name: 'Time', value: duration, inline: true },
+        )
+        .addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+        .setTimestamp()
+        .setFooter({ text: 'MLC Wave Runners' });
+
+      channel.send({ embeds: [exampleEmbed] });
 
         
     }).catch((error) => {
