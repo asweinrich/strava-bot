@@ -133,9 +133,9 @@ setInterval(() => {
         const speed = (dist/(seconds/3600)).toFixed(1)
         const paceRaw = (seconds/dist)
         const paceMin = (paceRaw/60).toFixed(0)
-        let paceSec = ((paceRaw%60)*60).toFixed(0)
+        let paceSec = (((paceRaw%60)/dist)*60).toFixed(0)
         if(paceSec < 10) {
-          paceSec.toString().padStart(2, 0)
+          paceSec.toString().padStart(2, '0')
         }
         const pace = paceMin+':'+paceSec
 
