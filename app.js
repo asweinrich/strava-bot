@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
+import crypto from 'crypto';
 import { Client, Events, GatewayIntentBits, EmbedBuilder } from 'discord.js';
 import {
   InteractionType,
@@ -27,6 +28,18 @@ client.once(Events.ClientReady, c => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+function generateHash(string) {
+    var hash = 0;
+    if (string.length == 0)
+        return hash;
+    for (let i = 0; i < string.length; i++) {
+        var charCode = string.charCodeAt(i);
+        hash = ((hash << 7) - hash) + charCode;
+        hash = hash & hash;
+    }
+    return hash;
+}
 
 
 // Create an express app
@@ -85,10 +98,12 @@ app.listen(PORT, () => {
   ]);
 });
 
+let lastActivity = null;
+
 
 setInterval(() => {
 
-    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=4', {
+    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
             'Authorization': 'Bearer '+process.env.STRAVA_KEY
         }
@@ -110,71 +125,78 @@ setInterval(() => {
         duration = minutes+' Min'
       }
 
-      const speed = (dist/(seconds/3600)).toFixed(1)
-      const paceRaw = (seconds/dist)
-      const paceMin = (paceRaw/60).toFixed(0)
-      let paceSec = ((paceRaw%60)*60).toFixed(0)
-      if(paceSec < 10) {
-        paceSec.toString().padStart(2, 0)
-      }
-      const pace = paceMin+':'+paceSec
-
-      const activity = data[0].sport_type
-
-      const message = athlete+' just completed a '+dist+' mile '+activity+'!'
-
-      console.log(response.data);
-
-      if(activity === 'Ride') {
-
-        // inside a command, event listener, etc.
-        const exampleEmbed = new EmbedBuilder()
-          .setColor('#77c471')
-          .setTitle(activityName)
-          .setDescription(message)
-          .addFields(
-            { name: 'Distance', value: dist+' Miles', inline: true },
-            { name: 'Time', value: duration, inline: true },
-            { name: 'Avg Speed', value: speed+' mph', inline: true },
-          )         
-          .setTimestamp()
-          .setFooter({ text: 'MLC Wave Runners' });
-        channel.send({ embeds: [exampleEmbed] });
-
-      } else if(activity === 'Run') {
-
-        // inside a command, event listener, etc.
-        const exampleEmbed = new EmbedBuilder()
-          .setColor('#77c471')
-          .setTitle(activityName)
-          .setDescription(message)
-          .addFields(
-            { name: 'Distance', value: dist+' Miles', inline: true },
-            { name: 'Time', value: duration, inline: true },
-            { name: 'Avg Pace', value: pace+' per mile', inline: true },
-          )          
-          .setTimestamp()
-          .setFooter({ text: 'MLC Wave Runners' });
-        channel.send({ embeds: [exampleEmbed] });
-
+      const activityID = generateHash(athlete+activityName+seconds)
+      if(lastActivity === activityID) {
+        console.log('Last Activity Hash: '+lastActivity);
+        console.log('No New Activites');
       } else {
+        const speed = (dist/(seconds/3600)).toFixed(1)
+        const paceRaw = (seconds/dist)
+        const paceMin = (paceRaw/60).toFixed(0)
+        let paceSec = ((paceRaw%60)*60).toFixed(0)
+        if(paceSec < 10) {
+          paceSec.toString().padStart(2, 0)
+        }
+        const pace = paceMin+':'+paceSec
 
-        // inside a command, event listener, etc.
-        const exampleEmbed = new EmbedBuilder()
-          .setColor('#77c471')
-          .setTitle(activityName)
-          .setDescription(message)
-          .addFields(
-            { name: 'Distance', value: dist+' Miles', inline: true },
-            { name: 'Time', value: duration, inline: true },
-          )          
-          .setTimestamp()
-          .setFooter({ text: 'MLC Wave Runners' });
-        channel.send({ embeds: [exampleEmbed] });
+        const activity = data[0].sport_type
 
-      }
+        const message = athlete+' just completed a '+dist+' mile '+activity+'!'
+
+        console.log(response.data);
+
+        if(activity === 'Ride') {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+              { name: 'Avg Speed', value: speed+' mph', inline: true },
+            )         
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        } else if(activity === 'Run') {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+              { name: 'Avg Pace', value: pace+' per mile', inline: true },
+            )          
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        } else {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+            )          
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        }
+
+        lastActivity = activityID
       
-      
+      }      
 
         
     }).catch((error) => {
