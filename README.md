@@ -2,6 +2,8 @@
 
 Listens for new Activities in Strava and sends embedded Discord messages with Activity details. 
 
+*This project was originally forked from the [discord-example-app](https://github.com/discord/discord-example-app) repo. ChatGPT was used to help write this README.*
+
 This repository contains the code for a JavaScript-based bot that listens for new activities in a specified Strava club and sends an embedded message to a specified Discord channel when a club member completes a new activity. This bot is hosted on Heroku and makes use of the following packages:
 
 - **[discord.js](https://discord.js.org)** - A powerful JavaScript library for interacting with the Discord API
