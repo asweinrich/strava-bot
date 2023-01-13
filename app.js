@@ -76,7 +76,9 @@ app.post('/interactions', async function (req, res) {
       const exampleEmbed = new EmbedBuilder()
         .setColor('#5563fa')
         .setTitle('MLC Wave Runners')
+        .setAuthor({ name: 'Strava' })
         .setURL('https://strava.com/clubs/mlc-wave-runners/')
+        .addThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')
         .setDescription('Join the club and run with the best')         
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners', iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
@@ -141,7 +143,7 @@ setInterval(() => {
         const speed = (dist/(seconds/3600)).toFixed(1)
         const paceRaw = (seconds/dist)
         const paceMin = (paceRaw/60).toFixed(0)
-        let paceSec = (((paceRaw%60)/dist)*60).toFixed(0)
+        let paceSec = (((paceRaw/60)%paceMin)*60).toFixed(0)
         if(paceSec < 10) {
           paceSec = paceSec.toString().padStart(2, '0')
         }
@@ -149,7 +151,7 @@ setInterval(() => {
 
         const activity = data[0].sport_type
 
-        const message = athlete+' just completed a '+dist+' mile '+activity+'!'
+        const message = athlete+' just completed a '+dist+' mile '+activity.toLowerCase()+'!'
 
         console.log(response.data);
 
@@ -163,7 +165,7 @@ setInterval(() => {
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
-              { name: 'Avg Speed', value: speed+' mph', inline: true },
+              { name: 'Avg Speed', value: speed+' MPH', inline: true },
             )
             .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')         
             .setTimestamp()
