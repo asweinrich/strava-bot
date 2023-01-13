@@ -21,10 +21,7 @@ const getAccessToken = async () => {
 }
 
 
-export const getActivity = async () => {
-    
+export const getActivity = async () => {   
     const { access_token: accessToken } = await getAccessToken()
-    console.log(accessToken)
-    
-    
+    return accessToken
 }
