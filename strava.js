@@ -24,7 +24,7 @@ const getAccessToken = async () => {
 }
 
 
-export const accessToken = async () => {   
+export const getActivity = async () => {   
     const { access_token: accessTok } = await getAccessToken()
     return accessTok
 }
