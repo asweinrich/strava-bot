@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import { DateTime } from 'luxon';
 import axios from 'axios';
+import crypto from 'crypto';
 import { Client, Events, GatewayIntentBits, EmbedBuilder } from 'discord.js';
 import {
   InteractionType,
@@ -15,7 +16,7 @@ import {
   JOIN_COMMAND,
   HasGuildCommands,
 } from './commands.js';
-import { StravaAccess } from './strava.js';
+import { getActivity } from './strava.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -48,9 +49,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
-
-// Store for in-progress games. In production, you'd want to use a DB
-const activeGames = {};
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -101,13 +99,108 @@ app.listen(PORT, () => {
 
 let lastActivity = null;
 
+getActivity()
+
 
 setInterval(() => {
 
-    const strava_access = StravaAccess()
-    strava_access.then(function(result) {
-      console.log(result)
-    })
-    console.log(strava_access)
-    
-}, 30000);
+    axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
+        headers: {
+            'Authorization': 'Bearer '
+        }
+    }).then((response) => {
+
+      const data = response.data
+
+      const activityName = data[0].name
+      const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
+      const dist = (data[0].distance/1600).toFixed(2)
+      const seconds = data[0].moving_time
+      let duration = 0
+      if(seconds > 3600) {
+        const hours = (seconds/3600).toFixed(0)
+        const minutes = ((seconds%3600)/60).toFixed(0)
+        duration = hours+' Hr '+minutes+' Min'
+      } else {
+        const minutes =(seconds/60).toFixed(0)
+        duration = minutes+' Min'
+      }
+
+      const activityID = generateHash(athlete+activityName+seconds)
+      if(lastActivity === activityID) {
+        console.log('Last Activity Hash: '+lastActivity);
+        console.log('No New Activites');
+      } else {
+        const speed = (dist/(seconds/3600)).toFixed(1)
+        const paceRaw = (seconds/dist)
+        const paceMin = (paceRaw/60).toFixed(0)
+        let paceSec = (((paceRaw%60)/dist)*60).toFixed(0)
+        if(paceSec < 10) {
+          paceSec = paceSec.toString().padStart(2, '0')
+        }
+        const pace = paceMin+':'+paceSec
+
+        const activity = data[0].sport_type
+
+        const message = athlete+' just completed a '+dist+' mile '+activity+'!'
+
+        console.log(response.data);
+
+        if(activity === 'Ride') {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+              { name: 'Avg Speed', value: speed+' mph', inline: true },
+            )         
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        } else if(activity === 'Run') {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+              { name: 'Avg Pace', value: pace+' per mile', inline: true },
+            )          
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        } else {
+
+          // inside a command, event listener, etc.
+          const exampleEmbed = new EmbedBuilder()
+            .setColor('#77c471')
+            .setTitle(activityName)
+            .setDescription(message)
+            .addFields(
+              { name: 'Distance', value: dist+' Miles', inline: true },
+              { name: 'Time', value: duration, inline: true },
+            )          
+            .setTimestamp()
+            .setFooter({ text: 'MLC Wave Runners' });
+          channel.send({ embeds: [exampleEmbed] });
+
+        }
+
+        lastActivity = activityID
+      
+      }      
+
+        
+    }).catch((error) => {
+        console.error(error);
+    });
+}, 60000);

@@ -1,6 +1,4 @@
-import fetch from 'node-fetch';
-
-export async function StravaAccess() {
+const getAccessToken = async () => {
     const headers = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
@@ -14,13 +12,19 @@ export async function StravaAccess() {
     })
 
     const reauthorizeResponse = await fetch('https://www.strava.com/oauth/token', {
-        method: 'post',
-        "headers": headers,
-        "body": body
+        method: 'POST',
+        headers,
+        body,
     })
 
-    const reAuthJson = await reauthorizeResponse.json()
+    return response.json()
+}
 
-    return reAuthJson.access_token
+
+export const getActivity = async () => {
+    
+    const { access_token: accessToken } = await getAccessToken()
+    return accessToken
+    
     
 }
