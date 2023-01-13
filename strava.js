@@ -7,7 +7,7 @@ const getAccessToken = async () => {
     const body = JSON.stringify({
         client_id: process.env.STRAVA_CLIENT_ID,
         client_secret: process.env.STRAVA_CLIENT_SECRET,
-        refresh_token: process.env.STRAVA_REFRESH_TOKEN,
+        refresh_token: process.env.STRAVA_REFRESH_KEY,
         grant_type: 'refresh_token',
     })
 
