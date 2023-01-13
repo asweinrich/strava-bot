@@ -17,12 +17,14 @@ const getAccessToken = async () => {
         body,
     })
 
-    console.log(await reauthorizeResponse.json())
-    return await reauthorizeResponse.json()
+    const result = await reauthorizeResponse.json()
+    const access = result.access_token
+
+    console.log(access)
 }
 
 
-export const getActivity = async () => {   
-    const { access_token: accessToken } = await getAccessToken()
-    return accessToken
+export const accessToken = async () => {   
+    const { access_token: accessTok } = await getAccessToken()
+    return accessTok
 }
