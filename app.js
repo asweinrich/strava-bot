@@ -98,12 +98,16 @@ app.listen(PORT, () => {
 });
 
 let lastActivity = null;
+let accessToken = null;
+
+async function accessTok() {
+    accessToken = await getActivity()
+    console.log(accessToken)
+}
 
 setInterval(() => {
 
-    const access = getActivity()
-
-    console.log('Access: ', access)
+    accessTok()
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
