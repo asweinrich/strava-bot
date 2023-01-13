@@ -109,7 +109,7 @@ setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
-            'Authorization': 'Bearer '+process.env.STRAVA_KEY
+            'Authorization': 'Bearer '+strava_access
         }
     }).then((response) => {
 
