@@ -100,22 +100,10 @@ app.listen(PORT, () => {
 let lastActivity = null;
 let accessToken = null;
 
-getAccessToken()
-    .then(token => {
-        console.log(token)
-        accessToken = token
-
-    })
-    .catch(error => {
-        console.error(error)
-    })
-
-
 setInterval(() => {
 
     getAccessToken()
       .then(token => {
-          console.log(token)
           accessToken = token
 
       })
@@ -169,16 +157,18 @@ setInterval(() => {
 
           // inside a command, event listener, etc.
           const exampleEmbed = new EmbedBuilder()
-            .setColor('#77c471')
+            .setColor('#5563fa')
             .setTitle(activityName)
             .setDescription(message)
+            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
               { name: 'Avg Speed', value: speed+' mph', inline: true },
-            )         
+            )
+            .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')         
             .setTimestamp()
-            .setFooter({ text: 'MLC Wave Runners' });
+            .setFooter({ text: 'MLC Wave Runners' , iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png'});
           channel.send({ embeds: [exampleEmbed] });
 
         } else if(activity === 'Run') {
@@ -188,28 +178,32 @@ setInterval(() => {
             .setColor('#77c471')
             .setTitle(activityName)
             .setDescription(message)
+            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
               { name: 'Avg Pace', value: pace+' per mile', inline: true },
-            )          
+            )
+            .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')          
             .setTimestamp()
-            .setFooter({ text: 'MLC Wave Runners' });
+            .setFooter({ text: 'MLC Wave Runners' , iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
           channel.send({ embeds: [exampleEmbed] });
 
         } else {
 
           // inside a command, event listener, etc.
           const exampleEmbed = new EmbedBuilder()
-            .setColor('#77c471')
+            .setColor('#aa0000')
             .setTitle(activityName)
             .setDescription(message)
+            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
-            )          
+            )
+            .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')          
             .setTimestamp()
-            .setFooter({ text: 'MLC Wave Runners' });
+            .setFooter({ text: 'MLC Wave Runners' , iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
           channel.send({ embeds: [exampleEmbed] });
 
         }
