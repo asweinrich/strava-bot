@@ -75,13 +75,13 @@ app.post('/interactions', async function (req, res) {
     if (name === 'join') {
       const exampleEmbed = new EmbedBuilder()
         .setColor('#5563fa')
-        .setTitle('Join MLC Wave Runners')
+        .setTitle('MLC Wave Runners')
         .setURL('https://strava.com/clubs/mlc-wave-runners/')
-        .setDescription('Request to join the Strava club for MLC. The Wave Runners Swim, Bike, Run, and everything in between.')         
+        .setDescription('Join the club and run with the best')         
         .setTimestamp()
-        .setFooter({ text: 'MLC Wave Runners' });
+        .setFooter({ text: 'MLC Wave Runners', iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
       // Send a message into the channel where command was triggered from
-      channel.send({ embeds: [exampleEmbed] });
+      return res.send({ embeds: [exampleEmbed] });
     }
     // additional guild commands go here: 
   }
