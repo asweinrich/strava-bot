@@ -17,7 +17,8 @@ const getAccessToken = async () => {
         body,
     })
 
-    console.log(reauthorizeResponse.json())
+    console.log(await reauthorizeResponse.json())
+    return await reauthorizeResponse.json()
 }
 
 
