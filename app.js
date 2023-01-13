@@ -74,7 +74,7 @@ app.post('/interactions', async function (req, res) {
     // "join" guild command
     if (name === 'join') {
       const exampleEmbed = new EmbedBuilder()
-        .setColor('#77c471')
+        .setColor('#5563fa')
         .setTitle('Join MLC Wave Runners')
         .setURL('https://strava.com/clubs/mlc-wave-runners/')
         .setDescription('Request to join the Strava club for MLC. The Wave Runners Swim, Bike, Run, and everything in between.')         
@@ -160,7 +160,6 @@ setInterval(() => {
             .setColor('#5563fa')
             .setTitle(activityName)
             .setDescription(message)
-            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
@@ -178,7 +177,6 @@ setInterval(() => {
             .setColor('#77c471')
             .setTitle(activityName)
             .setDescription(message)
-            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
@@ -196,7 +194,6 @@ setInterval(() => {
             .setColor('#aa0000')
             .setTitle(activityName)
             .setDescription(message)
-            .setAuthor({ name: athlete})
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
               { name: 'Time', value: duration, inline: true },
