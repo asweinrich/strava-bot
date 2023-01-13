@@ -105,13 +105,13 @@ async function accessTok() {
     console.log(accessToken)
 }
 
-setInterval(() => {
+accessTok()
 
-    accessTok()
+setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
-            'Authorization': 'Bearer '+access
+            'Authorization': 'Bearer '+accessToken
         }
     }).then((response) => {
 
