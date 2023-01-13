@@ -21,6 +21,6 @@ export async function StravaAccess() {
 
     const reAuthJson = await reauthorizeResponse.json()
 
-    return reAuthJson
+    return reAuthJson.access_token
     
 }
