@@ -16,7 +16,7 @@ import {
   JOIN_COMMAND,
   HasGuildCommands,
 } from './commands.js';
-import { getActivity } from './strava.js';
+import { getAccessToken } from './strava.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -101,8 +101,10 @@ let lastActivity = null;
 let accessToken = null;
 
 getActivity()
-    .then(accessToken => {
-        console.log(accessToken)
+    .then(token => {
+        console.log(token)
+        accessToken = token
+
     })
     .catch(error => {
         console.error(error)
@@ -113,7 +115,7 @@ setInterval(() => {
 
     axios.get('https://www.strava.com/api/v3/clubs/1100648/activities?page=1&per_page=1', {
         headers: {
-            'Authorization': 'Bearer '
+            'Authorization': 'Bearer '+accessToken
         }
     }).then((response) => {
 

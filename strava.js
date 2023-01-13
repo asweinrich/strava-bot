@@ -1,4 +1,4 @@
-const getAccessToken = async () => {
+export const getAccessToken = async () => {
     const headers = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
@@ -20,11 +20,5 @@ const getAccessToken = async () => {
     const result = await reauthorizeResponse.json()
     const access = result.access_token
 
-    console.log(access)
-}
-
-
-export const getActivity = async () => {   
-    const { access_token: accessTok } = await getAccessToken()
-    return accessTok
+    return access
 }
