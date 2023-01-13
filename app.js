@@ -104,7 +104,7 @@ let lastActivity = null;
 
 setInterval(() => {
 
-    const strava_access = await StravaAccess()
+    const strava_access = StravaAccess()
     console.log(strava_access)
     
 }, 30000);
