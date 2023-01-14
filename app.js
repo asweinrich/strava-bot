@@ -13,7 +13,7 @@ import {
 } from 'discord-interactions';
 import { VerifyDiscordRequest, getRandomEmoji, DiscordRequest } from './utils.js';
 import {
-  JOIN_COMMAND,
+  RIDETHEWAVE_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 import { getAccessToken } from './strava.js';
@@ -23,7 +23,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 let channel = null
 
 client.once(Events.ClientReady, c => {
-  channel = client.channels.cache.get('942115367935967264');
+  channel = client.channels.cache.get('1058121514404282428');
   console.log('Ready! Logged in as '+c.user.tag);
   console.log('Currently sending updates in :'+channel)
 });
@@ -71,8 +71,8 @@ app.post('/interactions', async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name } = data;
 
-    // "join" guild command
-    if (name === 'join') {
+    // "ridethewave" guild command
+    if (name === 'ridethewave') {
       const exampleEmbed = new EmbedBuilder()
         .setColor('#5563fa')
         .setTitle('MLC Wave Runners')
@@ -95,7 +95,7 @@ app.listen(PORT, () => {
 
   // Check if guild commands from commands.js are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
-    JOIN_COMMAND,
+    RIDETHEWAVE_COMMAND,
   ]);
 });
 

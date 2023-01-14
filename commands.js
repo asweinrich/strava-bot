@@ -43,9 +43,9 @@ export async function InstallGuildCommand(appId, guildId, command) {
 }
 
 // Simple test command
-export const JOIN_COMMAND = {
-  name: 'join',
-  description: 'Basic guild command to join Wave Runners',
+export const RIDETHEWAVE_COMMAND = {
+  name: 'ridethewave',
+  description: 'Get blessed with an invite the the Wave Runners Strava Group',
   type: 1,
 };
 
