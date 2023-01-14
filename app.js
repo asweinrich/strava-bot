@@ -83,7 +83,12 @@ app.post('/interactions', async function (req, res) {
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners', iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
       // Send a message into the channel where command was triggered from
-      return res.send({ embeds: [exampleEmbed] });
+      return res.send({ 
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          embeds: [exampleEmbed] 
+        }
+      });
     }
     // additional guild commands go here: 
   }
