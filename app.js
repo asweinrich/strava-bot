@@ -78,7 +78,7 @@ app.post('/interactions', async function (req, res) {
         .setTitle('MLC Wave Runners')
         .setAuthor({ name: 'Strava' })
         .setURL('https://strava.com/clubs/mlc-wave-runners/')
-        .addThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')
+        .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')
         .setDescription('Join the club and run with the best')         
         .setTimestamp()
         .setFooter({ text: 'MLC Wave Runners', iconURL: 'https://asweinrich.dev/media/WAVERUNNERS.png' });
