@@ -128,7 +128,7 @@ setInterval(() => {
 
       const activityName = data[0].name
       const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
-      const dist = (data[0].distance/1600).toFixed(2)
+      const dist = Number((data[0].distance/1600).toFixed(2))
       const seconds = data[0].moving_time
       let duration = 0
       if(seconds > 3600) {
@@ -147,7 +147,7 @@ setInterval(() => {
       } else {
         const speed = (dist/(seconds/3600)).toFixed(1)
         const paceRaw = (seconds/dist)
-        const paceMin = (paceRaw/60).toFixed(0)
+        const paceMin = Math.trunc(paceRaw/60)
         let paceSec = (((paceRaw/60)%paceMin)*60).toFixed(0)
         if(paceSec < 10) {
           paceSec = paceSec.toString().padStart(2, '0')
