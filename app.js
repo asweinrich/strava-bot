@@ -104,7 +104,7 @@ app.listen(PORT, () => {
   ]);
 });
 
-let lastActivity = null;
+let lastActivityString = null;
 let accessToken = null;
 
 setInterval(() => {
@@ -132,7 +132,7 @@ setInterval(() => {
       const seconds = data[0].moving_time
       let duration = 0
       if(seconds > 3600) {
-        const hours = (seconds/3600).toFixed(0)
+        const hours = Math.trunc(seconds/3600)
         const minutes = ((seconds%3600)/60).toFixed(0)
         duration = hours+' Hr '+minutes+' Min'
       } else {
@@ -212,7 +212,7 @@ setInterval(() => {
 
         }
 
-        lastActivity = activityString
+        lastActivityString = activityString
       
       }      
 
