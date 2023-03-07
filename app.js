@@ -128,7 +128,7 @@ setInterval(() => {
 
       const activityName = data[0].name
       const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
-      const dist = Number((data[0].distance/1609).toFixed(2))
+      const dist = Number((data[0].distance/1609.34).toFixed(2))
       const seconds = data[0].moving_time
       let duration = 0
       if(seconds > 3600) {
