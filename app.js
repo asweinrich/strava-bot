@@ -140,9 +140,9 @@ setInterval(() => {
         duration = minutes+' Min'
       }
 
-      const activityID = generateHash(athlete+activityName+seconds)
-      if(lastActivity === activityID) {
-        console.log('Last Activity Hash: '+lastActivity);
+      const activityString = 'ATHL:'+athlete+'-DIST:'+dist+'-TIME:'+seconds
+      if(lastActivityString === activityString) {
+        console.log('Last Activity String: '+lastActivityString);
         console.log('No New Activites');
       } else {
         const speed = (dist/(seconds/3600)).toFixed(1)
@@ -212,7 +212,7 @@ setInterval(() => {
 
         }
 
-        lastActivity = activityID
+        lastActivity = activityString
       
       }      
 
@@ -220,4 +220,4 @@ setInterval(() => {
     }).catch((error) => {
         console.error(error);
     });
-}, 120000);
+}, 300000);
