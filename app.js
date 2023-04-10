@@ -16,6 +16,7 @@ import {
   RIDETHEWAVE_COMMAND,
   HasGuildCommands,
 } from './commands.js';
+import cache from './cache.js';
 import { getAccessToken } from './strava.js';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -109,6 +110,9 @@ let accessToken = null;
 
 setInterval(() => {
 
+    const lastActivityString = cache.get('lastActivityString', null) || 'No activities' 
+    console.log('Last Activity: '+cache.get('lastActivityString', null))
+    
     getAccessToken()
       .then(token => {
           accessToken = token
@@ -130,6 +134,7 @@ setInterval(() => {
       const athlete = data[0].athlete.firstname+' '+data[0].athlete.lastname
       const dist = Number((data[0].distance/1609.34).toFixed(2))
       const seconds = data[0].moving_time
+      const secondsTot = data[0].elapsed_time
       let duration = 0
       if(seconds > 3600) {
         const hours = Math.trunc(seconds/3600)
@@ -139,8 +144,18 @@ setInterval(() => {
         const minutes =(seconds/60).toFixed(0)
         duration = minutes+' Min'
       }
+      let durationTot = 0
+      if(secondsTot > 3600) {
+        const hoursTot = Math.trunc(secondsTot/3600)
+        const minutesTot = ((secondsTot%3600)/60).toFixed(0)
+        durationTot = hoursTot+' Hr '+minutesTot+' Min'
+      } else {
+        const minutesTot = (seconds/60).toFixed(0)
+        durationTot = minutesTot+' Min'
+      }
 
       const activityString = 'ATHL:'+athlete+'-DIST:'+dist+'-TIME:'+seconds
+      cache.set('lastActivityString', activityString)
       if(lastActivityString === activityString) {
         console.log('Last Activity String: '+lastActivityString);
         console.log('No New Activites');
@@ -156,11 +171,13 @@ setInterval(() => {
 
         const activity = data[0].sport_type
 
-        const message = athlete+' just completed a '+dist+' mile '+activity.toLowerCase()+'!'
+        let message
 
         console.log(response.data);
 
         if(activity === 'Ride') {
+
+          message = athlete+' just completed a '+dist+' mile '+activity.toLowerCase()+'!'
 
           // inside a command, event listener, etc.
           const exampleEmbed = new EmbedBuilder()
@@ -179,6 +196,8 @@ setInterval(() => {
 
         } else if(activity === 'Run') {
 
+          message = athlete+' just completed a '+dist+' mile '+activity.toLowerCase()+'!'
+
           // inside a command, event listener, etc.
           const exampleEmbed = new EmbedBuilder()
             .setColor('#77c471')
@@ -196,6 +215,8 @@ setInterval(() => {
 
         } else {
 
+          message = athlete+' just completed a '+durationTot+' '+activity.toLowerCase()+' session!'
+
           // inside a command, event listener, etc.
           const exampleEmbed = new EmbedBuilder()
             .setColor('#aa0000')
@@ -203,7 +224,7 @@ setInterval(() => {
             .setDescription(message)
             .addFields(
               { name: 'Distance', value: dist+' Miles', inline: true },
-              { name: 'Time', value: duration, inline: true },
+              { name: 'Time', value: durationTot, inline: true },
             )
             .setThumbnail('https://asweinrich.dev/media/WAVERUNNERS.png')          
             .setTimestamp()
@@ -211,8 +232,6 @@ setInterval(() => {
           channel.send({ embeds: [exampleEmbed] });
 
         }
-
-        lastActivityString = activityString
       
       }      
 
